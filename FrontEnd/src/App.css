@@ -1,0 +1,21 @@
+
+@import "tailwindcss";
+
+body {
+    background-color: #ebe9f2;
+    background-image: url("https://www.transparenttextures.com/patterns/arches.png");
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: weight;
+    font-style: normal;
+}
+
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
