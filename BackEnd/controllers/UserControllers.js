@@ -31,7 +31,7 @@ const signUp = async (req, res) => {
         const token = jwt.sign({id:savedUser._id}, process.env.JWT_SECRET_KEY, {expiresIn: "1h"})
 
         // add cookies to the res
-        res.cookie("token", token, {httpOnly: true, secure: false, maxAge: 24*60*60*1000, sameSite: "strict"})
+        res.cookie("token", token, {httpOnly: true, secure: true, maxAge: 24*60*60*1000, sameSite: "strict"})
             .status(200).json({message: "User created successfully", token, data: savedUser})
     } catch (err) {
         console.error({message: err.message});
@@ -54,7 +54,7 @@ const signIn = async (req, res) => {
         const token = jwt.sign({id: user._id}, process.env.JWT_SECRET_KEY, {expiresIn: "1h"}) // create a token when user has been able to Log In
 
         // apply cookies to our res
-        res.cookie("token", token, {httpOnly: true, secure: false, maxAge: 24*60*60*1000, sameSite: "strict"})
+        res.cookie("token", token, {httpOnly: true, secure: true, maxAge: 24*60*60*1000, sameSite: "strict"})
             .status(200).json({message: "User signed in successfully", token, user: {id:user._id, name: user.name, email: user.email} })
     } catch (err) {
         console.error({message: err.message});
@@ -92,7 +92,7 @@ const requestPasswordReset = async (req, res) => {
         
         // // In production, send email with resetLink. For now, log it
         // console.log("Password reset link: ", resetLink)
-        
+
         // send email with reset link
         const mailOptions = {
             from: process.env.EMAIL_USER,
