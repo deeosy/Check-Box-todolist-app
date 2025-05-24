@@ -11,7 +11,7 @@ export default function SignUpPage() {
     const onSubmit = async (data) => {
       try {
         await SignUpUser(data.name, data.email, data.password)
-        alert("Registration successful")
+        alert("Registration successful. Please check in with your creditentials.")
         // console.log("User data: ", data);        
       } catch (error) {
         // console.error("Registration error: ", error);
