@@ -11,7 +11,7 @@ export default function ResetPassword() {
     const onSubmit = async (data) => {
         try {
             await RequestPasswordRest(data.email)
-            alert('Password reset link sent to the Console') // change this to email in production, and use a liabray like nodeMailer to set this up
+            alert('Password reset link sent to your mail. Please check your inbox.') // change this to email in production, and use a liabray like nodeMailer to set this up
             reset()
         } catch (error) {
             console.error('Reset password error: ', error)
