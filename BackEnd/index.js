@@ -20,13 +20,13 @@ server.use(cors({
     origin: (origin, callback) => {
     if(!origin) return callback(null, true)  // allow request with no origin like postman
     if(alloweOrigins.includes(origin)){
-      return(null, true)
+      return callback(null, true)
     }else{
       return callback(new Error('Not allowed by CORS'))
     }
     
   },
-
+  
   credentials: true,   // need to allow cookies to work
 }))
 server.use(express.json())  // using this instead of body-parser
