@@ -1,22 +1,57 @@
 const express = require('express')
-// const bodyParser = require('body-parser')
 const { default: mongoose } = require('mongoose')
 const todoRoutes = require('./routes/TodoRoutes')
 const userRoutes = require('./routes/UserRoutes')
+const nodemailer = require('nodemailer')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
 require("dotenv").config()
 
-const port = 4002
+const port = process.env.PORT
 const server = express()
+const alloweOrigins = [
+  "http://localhost:5173",
+  'https://storied-marigold-78cfef.netlify.app',
+]
 
 // middlewares 
 server.use(cookieParser())
 server.use(cors({ 
-  origin: "http://localhost:5173",  // cors configuration
+  // origin: "http://localhost:5173",  // cors configuration  for local host
+
+  // cors config for deployment
+    origin: (origin, callback) => {
+    if(!origin) return callback(null, true)  // allow request with no origin like postman
+    if(alloweOrigins.includes(origin)){
+      return(null, true)
+    }else{
+      return callback(new Error('Not allowed by CORS'))
+    }
+    
+  },
+
   credentials: true,   // need to allow cookies to work
 }))
-server.use(express.json())
+server.use(express.json())  // using this instead of body-parser
+
+//Nodemailer transporter setup
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER,  // add email and password to .env file
+    pass: process.env.EMAIL_PASS, 
+  }
+})
+
+// Verify transporter configuration
+transporter.verify((err, success) => {
+  if(err){
+    console.log('Email transporter error: ', err)
+  } else {
+    console.log('Email transporter is ready: ', success);
+    
+  }
+})
 
 //routes
 server.use(todoRoutes)

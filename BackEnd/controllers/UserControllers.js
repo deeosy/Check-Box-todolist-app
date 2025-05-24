@@ -1,7 +1,16 @@
 const UserModel = require("../model/UserModel")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
+const nodemailer = require('nodemailer')
 require("dotenv").config()
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+    },
+});
 
 // create new user
 const signUp = async (req, res) => {
@@ -80,9 +89,21 @@ const requestPasswordReset = async (req, res) => {
         user.resetPasswordToken = resetToken
         user.resetPasswordExpires = Date.now() + 15 * 60 * 1000  // 15mins
         await user.save()
+        
+        // // In production, send email with resetLink. For now, log it
+        // console.log("Password reset link: ", resetLink)
+        
+        // send email with reset link
+        const mailOptions = {
+            from: process.env.EMAIL_USER,
+            to: email,
+            subject: 'Password Reset Request',
+            text: `Click the following like to reset your password: ${resetLink}\nThis link expires in 15 minutes.`,
+            html: `<p>Click the following link to reset your password: <a href="${resetLink}">${resetLink}</a></p><p>This link expires in 15 minutes.</p>`,
+        }
 
-        // In production, send email with resetLink. For now, log it
-        console.log("Password reset link: ", resetLink)
+        await transporter.sendMail(mailOptions);
+
         res.status(200).json({message: "Password reset link generated in console" })  // in production this will be password link generated in email
     } catch (error) {
         console.error({message: error.message})
