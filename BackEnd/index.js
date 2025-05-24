@@ -9,7 +9,7 @@ require("dotenv").config()
 
 const port = process.env.PORT || 4002
 const server = express()
-const alloweOrigins = process.env.ALLOWED_ORIGINS
+const alloweOrigins = process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : [];
 
 // middlewares 
 server.use(cookieParser())
@@ -23,8 +23,7 @@ server.use(cors({
       return callback(null, true)
     }else{
       return callback(new Error('Not allowed by CORS'))
-    }
-    
+    }    
   },
   
   credentials: true,   // need to allow cookies to work

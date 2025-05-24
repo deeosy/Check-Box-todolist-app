@@ -51,7 +51,7 @@ const signIn = async (req, res) => {
         const isPasswordSame = await bcrypt.compare(password, user.password) // compare passwords
         if(!isPasswordSame) return res.status(400).json({message: "Invalid credentials"})
 
-        const token = jwt.sign({id: user._id}, process.env.JWT_SECRET_KEY, {expiresIn: "1h"}) // create a token when user has been able to Log In
+        const token = jwt.sign({id: user._id}, process.env.JWT_SECRET_KEY, {expiresIn: "1d"}) // create a token when user has been able to Log In
 
         // apply cookies to our res
         res.cookie("token", token, {httpOnly: true, secure: true, maxAge: 24*60*60*1000, sameSite: "strict"})
