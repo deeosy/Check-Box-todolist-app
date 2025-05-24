@@ -13,6 +13,7 @@ export default function SignInPage() {
       try {
         await LoginUser(data.email, data.password)
         alert("Check in successfully")
+        console.log(navigate("/dashboard"));        
         navigate("/dashboard") // redirect to dashboard upon successfull login
         // console.log("User data: ", data);       
       } catch (error) {
