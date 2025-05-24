@@ -9,10 +9,7 @@ require("dotenv").config()
 
 const port = process.env.PORT
 const server = express()
-const alloweOrigins = [
-  "http://localhost:5173",
-  'https://storied-marigold-78cfef.netlify.app',
-]
+const alloweOrigins = process.env.ALLOWED_ORIGINS
 
 // middlewares 
 server.use(cookieParser())
