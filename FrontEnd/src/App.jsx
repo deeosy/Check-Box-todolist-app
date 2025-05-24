@@ -14,7 +14,7 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => { // check if user is authenticated by calling a protected endpoint
-    axios.get("http://localhost:4002/", {withCredentials: true})
+    axios.get("https://check-box-todolist-app.onrender.com/", {withCredentials: true})
       .then(()=> setIsAuthenticated(true))
       .catch(()=> setIsAuthenticated(false))
       .finally(()=> setLoading(false))

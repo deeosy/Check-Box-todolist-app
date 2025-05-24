@@ -8,7 +8,7 @@ import unChecked from '../src/assets/unchecked.svg'
 import checked from '../src/assets/check-box-logo.svg'
 
 export default function TodoCard({task, onTaskUpdated }) {
-  const baseURL = 'http://localhost:4002'
+  const baseURL = 'https://check-box-todolist-app.onrender.com'
 
   const [isEditing, setIsEditing] = useState(false) //state to track whether the card is in editing mode
   const [editedTask, setEditedTask] = useState(task.todoEntry)  //state to store the edited task text (initially set to the current task value)

@@ -1,7 +1,7 @@
 import axios from "axios"
 
 const api = axios.create({
-    baseURL: "http://localhost:4002",
+    baseURL: "https://check-box-todolist-app.onrender.com",
     headers: { "Content-Type": "application/json" },
     withCredentials: true, // ensures cookies are sent with requests to the backend
 })

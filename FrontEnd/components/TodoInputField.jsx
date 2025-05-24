@@ -28,7 +28,7 @@ export default function TodoInputField({refreshTasks}) {
 
         if(!todoEntry.trim()) return;  // this prevents empty entries
         try {
-            const response = await axios.post('http://localhost:4002/tasks', { todoEntry }, {headers: {'Content-Type': 'application/json'}, withCredentials: true} )
+            const response = await axios.post('https://check-box-todolist-app.onrender.com/tasks', { todoEntry }, {headers: {'Content-Type': 'application/json'}, withCredentials: true} )
             setStatus('Task created successfully')
             setTodoEntry('')
             setIsButtonVisible(false);  // hide button after submission

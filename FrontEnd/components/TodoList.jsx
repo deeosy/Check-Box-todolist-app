@@ -6,7 +6,7 @@ import axios from 'axios'
 import Header from './Header'
 import Footer from './Footer'
 
-const baseURL = 'http://localhost:4002'
+const baseURL = 'https://check-box-todolist-app.onrender.com'
 
 export default function TodoList() {
     const [todoList, setTodoList] = useState([])
