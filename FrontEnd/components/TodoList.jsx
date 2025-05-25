@@ -20,6 +20,9 @@ export default function TodoList() {
             setTodoList(response.data.reverse())
             setLoading(false)
         } catch (error) {
+            if (error.response?.status === 401) {
+              navigate('/'); // Redirect to login if unauthorized
+            }
             setError('Failed to load task(s)')
             setLoading(false)
         }
