@@ -5,19 +5,21 @@ import Logo from '../../components/Logo'
 import { Link, useNavigate } from 'react-router-dom'
 import { LoginUser } from '../../components/APIs/api'
 
-export default function SignInPage() {
+export default function SignInPage({ onLoginSuccess }) {
     const navigate = useNavigate()
     const { register, handleSubmit, reset, formState: {errors} } = useForm()
 
     const onSubmit = async (data) => {
       try {
-        await LoginUser(data.email, data.password)
+        const response = await LoginUser(data.email, data.password)
         alert("Check in successfully")
-        // console.log(navigate("/dashboard"));        
-        navigate("/dashboard") // redirect to dashboard upon successfull login
+        if(onLoginSuccess){
+          onLoginSuccess()
+        }       
+        navigate("/dashboard", {replace: true} ) // redirect to dashboard upon successfull login
         // console.log("User data: ", data);       
       } catch (error) {
-        // console.error("Login error: ", error);
+        console.error("Login error: ", error);
         alert("Check in failed. Please check your credentials")        
       } finally {
         reset()

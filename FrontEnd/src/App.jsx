@@ -13,12 +13,26 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] =useState(false);
   const [loading, setLoading] = useState(true);
 
+  const checkAuth = async () => {
+    try {
+      await axios.get("https://check-box-todolist-app.onrender.com/", {withCredentials: true})
+      setIsAuthenticated(true);
+      console.log('Auth check result: ', isAuthenticated);
+      
+    } catch (err) {
+      setIsAuthenticated(false)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   useEffect(() => { // check if user is authenticated by calling a protected endpoint
-    axios.get("https://check-box-todolist-app.onrender.com/", {withCredentials: true})
-      .then(()=> setIsAuthenticated(true))
-      .catch(()=> setIsAuthenticated(false))
-      .finally(()=> setLoading(false))
+    checkAuth
   }, []);
+
+  const handleLoginSuccess = () => {
+    setIsAuthenticated(true)
+  }
 
   if(loading) return <div className="">Loading ...</div>
 
@@ -28,9 +42,9 @@ function App() {
       <Router>
         <div className="mt-10">
           <Routes>
-            <Route path="/" element={<SignInPage />} />
+            <Route path="/" element={ isAuthenticated ? <Navigate to='/dashboard' replace /> : <SignInPage onLoginSuccess={handleLoginSuccess} />} />
             <Route path="/signup" element={<SignUpPage />} />
-            <Route path='/dashboard' element={isAuthenticated ? <TodoList /> : <Navigate to="/" /> } />
+            <Route path='/dashboard' element={isAuthenticated ? <TodoList /> : <Navigate to="/" replace /> } />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path='/reset-password/:token' element={<ResetPasswordConfirm /> } />
 
