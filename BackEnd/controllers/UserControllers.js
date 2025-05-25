@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const nodemailer = require('nodemailer')
 require("dotenv").config()
+const isProduction = process.env.NODE_ENV === 'production';
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -54,7 +55,7 @@ const signIn = async (req, res) => {
         const token = jwt.sign({id: user._id}, process.env.JWT_SECRET_KEY, {expiresIn: "1d"}) // create a token when user has been able to Log In
 
         // apply cookies to our res
-        res.cookie("token", token, {httpOnly: true, secure: true, maxAge: 24*60*60*1000, sameSite: "strict"})
+        res.cookie("token", token, {httpOnly: true, secure: isProduction, maxAge: 24*60*60*1000, sameSite: isProduction ? "none" : "strict"})
             .status(200).json({message: "User signed in successfully", token, user: {id:user._id, name: user.name, email: user.email} })
     } catch (err) {
         console.error({message: err.message});
