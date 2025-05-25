@@ -13,6 +13,21 @@ const transporter = nodemailer.createTransport({
     },
 });
 
+
+const authCheck = async (req, res) => {
+    const token = req.cookies.token;
+    if (!token) return res.status(401).json({ message: "Unauthorized: No token provided" });
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+        const user = await UserModel.findById(decoded.id);
+        if (!user) return res.status(404).json({ message: "User not found" });
+        res.status(200).json({ user: { id: user._id, name: user.name, email: user.email } });
+    } catch (error) {
+        res.status(401).json({ message: "Unauthorized: Invalid token" });
+    }
+};
+
 // create new user
 const signUp = async (req, res) => {
     try {        
@@ -105,7 +120,7 @@ const requestPasswordReset = async (req, res) => {
 
         await transporter.sendMail(mailOptions);
 
-        res.status(200).json({message: "Password reset link generated in console" })  // in production this will be password link generated in email
+        res.status(200).json({message: "Password reset link sent to your email" })  // in production this will be password link generated in email
     } catch (error) {
         console.error({message: error.message})
         res.status(500).json({message: "Internal server error"})        
@@ -145,4 +160,4 @@ const confirmPasswordReset = async (req, res) => {
     }
 }
 
-module.exports = { signUp, signIn, signOut, requestPasswordReset, confirmPasswordReset }
+module.exports = { signUp, signIn, signOut, requestPasswordReset, confirmPasswordReset, authCheck }

@@ -9,7 +9,7 @@ require("dotenv").config()
 
 const port = process.env.PORT || 4002
 const server = express()
-const alloweOrigins = process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : [];
+const allowedOrigins = process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : [];
 
 // middlewares 
 server.use(cookieParser())
@@ -19,7 +19,7 @@ server.use(cors({
   // cors config for deployment
     origin: (origin, callback) => {
     if(!origin) return callback(null, true)  // allow request with no origin like postman
-    if(alloweOrigins.includes(origin)){
+    if(allowedOrigins.includes(origin)){
       return callback(null, true)
     }else{
       return callback(new Error('Not allowed by CORS'))
