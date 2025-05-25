@@ -10,6 +10,6 @@ router.post('/signout', signOut)
 
 router.post('/reset-password/request', requestPasswordReset)
 router.post('/reset-password/confirm', confirmPasswordReset)
-router.get('/check', authCheck)
+router.get('/auth/check', authCheck)
 
 module.exports = router
