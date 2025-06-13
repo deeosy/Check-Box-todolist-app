@@ -30,38 +30,53 @@ function App() {
 
   if (loading) {
     return (
-      <AnimatePresence>
-      <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
-        <motion.div
-          className="w-32 h-32 bg-sky-300 flex items-center justify-center relative"
-          initial={{ 
-            clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)' // perfect square
-          }}
-          animate={{
-            clipPath: [
-              'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)', // square
-              'polygon(25% 0%, 75% 0%, 100% 100%, 0% 100%)', // top edge starts narrowing
-              'polygon(50% -10%, 50% -10%, 100% 90%, 0% 90%)', // top protrudes up, bottom starts
-              'polygon(50% -20%, 50% -20%, 90% 75%, 10% 75%)', // more protrusion
-              'polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%)' // final hexagon
-            ]
-          }}
-          transition={{ 
-            duration: 3,
-            ease: 'easeInOut',
-            times: [0, 0.2, 0.5, 0.8, 1],
-            repeat: Infinity,
-            repeatDelay: 0.5
-          }}
-        >
+    <AnimatePresence>
+      <div className="flex items-center justify-center h-screen bg-gray-100">
+        <div className="relative  w-32 h-32  ">
+          {/* Hexagon - scales from 0 to 1 behind the square */}
           <motion.div
+            className="absolute inset-0 w-[130px] h-[130px] bg-sky-300 flex items-center justify-center"
+            style={{
+              clipPath: 'polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%)'
+            }}
+            initial={{ scale: 0 }}
+            animate={{ scale: [0, 0, 1.2] }}
+            transition={{ 
+              duration: 2.5,
+              times: [0, 0.4, 1],
+              ease: 'easeOut',
+              repeat: Infinity,
+              repeatDelay: 0.5
+            }}
+          />
+          
+          {/* Square - scales from 1 to 0 in front */}
+          <motion.div
+            className="absolute inset-0 bg-sky-300 flex items-center justify-center"
+            style={{
+              clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)'
+            }}
+            initial={{ scale: 1 }}
+            animate={{ scale: [0.6, 0.6, 0.5] }}
+            transition={{ 
+              duration: 2.5,
+              times: [0, 0.4, 1],
+              ease: 'easeIn',
+              repeat: Infinity,
+              repeatDelay: 0.5
+            }}
+          />
+          
+          {/* Checkmark - appears after transformation */}
+          <motion.div
+            className="absolute inset-0 flex items-center justify-center"
             initial={{ scale: 0, opacity: 0 }}
             animate={{ 
               scale: [0, 0, 0.8, 1.2, 1, 0],
               opacity: [0, 0, 1, 1, 1, 0]
             }}
             transition={{ 
-              duration: 3,
+              duration: 2.5,
               times: [0, 0.6, 0.7, 0.85, 0.95, 1],
               ease: 'easeOut',
               repeat: Infinity,
@@ -83,7 +98,7 @@ function App() {
                   pathLength: [0, 0, 1, 1, 1, 0]
                 }}
                 transition={{
-                  duration: 3,
+                  duration: 2.5,
                   times: [0, 0.65, 0.8, 0.9, 0.95, 1],
                   ease: 'easeInOut',
                   repeat: Infinity,
@@ -99,8 +114,8 @@ function App() {
                   pathLength: [0, 0, 1, 1, 1, 0]
                 }}
                 transition={{
-                  duration: 3,
-                  times: [0, 0.7, 0.85, 0.9, 0.95, 1],
+                  duration: 2.5,
+                  times: [0, 0.67, 0.82, 0.9, 0.95, 1],
                   ease: 'easeInOut',
                   repeat: Infinity,
                   repeatDelay: 0.5
@@ -108,63 +123,9 @@ function App() {
               />
             </svg>
           </motion.div>
-        </motion.div>
-        {/* Loading text */}
-        <motion.div
-          className="mt-6 text-center"
-          animate={{
-            opacity: [0.5, 1, 0.5]
-          }}
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        >
-          <h2 className="text-2xl font-semibold text-gray-700 mb-2">
-            Loading
-          </h2>
-          <div className="flex justify-center space-x-1">
-            <motion.div
-              className="w-2 h-2 bg-indigo-500 rounded-full"
-              animate={{
-                scale: [1, 1.5, 1],
-                opacity: [0.5, 1, 0.5]
-              }}
-              transition={{
-                duration: 1,
-                repeat: Infinity,
-                delay: 0
-              }}
-            />
-            <motion.div
-              className="w-2 h-2 bg-indigo-500 rounded-full"
-              animate={{
-                scale: [1, 1.5, 1],
-                opacity: [0.5, 1, 0.5]
-              }}
-              transition={{
-                duration: 1,
-                repeat: Infinity,
-                delay: 0.2
-              }}
-            />
-            <motion.div
-              className="w-2 h-2 bg-indigo-500 rounded-full"
-              animate={{
-                scale: [1, 1.5, 1],
-                opacity: [0.5, 1, 0.5]
-              }}
-              transition={{
-                duration: 1,
-                repeat: Infinity,
-                delay: 0.4
-              }}
-            />
-          </div>
-        </motion.div>
+        </div>
       </div>
-      </AnimatePresence>
+    </AnimatePresence>
     );
   }
 
